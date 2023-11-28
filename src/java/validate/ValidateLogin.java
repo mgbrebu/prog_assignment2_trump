@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -33,7 +34,7 @@ public class ValidateLogin extends HttpServlet {
         
         String user=request.getParameter("username").trim();
         String pass=request.getParameter("password").trim();
-        
+
         try
              {
                  Connection con=new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
@@ -68,7 +69,7 @@ public class ValidateLogin extends HttpServlet {
 
         MessageDigest mdAlgorithm = null;
         try {
-            mdAlgorithm = MessageDigest.getInstance("MD5");
+            mdAlgorithm = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(ValidateLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
