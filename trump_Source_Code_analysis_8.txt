@@ -1,0 +1,68 @@
+
+Testing ./ ...
+
+ ✗ [Medium] Cross-site Scripting (XSS) 
+   Path: web/forumposts.jsp, line 45 
+   Info: Unsanitized input from a database flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [Medium] Cross-site Scripting (XSS) 
+   Path: web/forumposts.jsp, line 46 
+   Info: Unsanitized input from a database flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [Medium] Cross-site Scripting (XSS) 
+   Path: web/forumposts.jsp, line 47 
+   Info: Unsanitized input from a database flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] SQL Injection 
+   Path: web/profile.jsp, line 46 
+   Info: Unsanitized input from an HTTP parameter flows into executeQuery, where it is used in an SQL query. This may result in an SQL Injection vulnerability.
+
+ ✗ [High] SQL Injection 
+   Path: web/profile.jsp, line 53 
+   Info: Unsanitized input from an HTTP parameter flows into executeQuery, where it is used in an SQL query. This may result in an SQL Injection vulnerability.
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/login.jsp, line 45 
+   Info: Unsanitized input from cookies flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/login.jsp, line 46 
+   Info: Unsanitized input from cookies flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 48 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 49 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 50 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 56 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 57 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 58 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+
+✔ Test completed
+
+Organization:      danb983
+Test type:         Static code analysis
+Project path:      ./
+
+Summary:
+
+  13 Code issues found
+  10 [High]   3 [Medium] 
+
+
