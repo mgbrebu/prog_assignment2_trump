@@ -11,6 +11,10 @@
             int BUFSIZE = 4096;
                String filePath;
             filePath = request.getParameter("file");
+            
+            //Sanitize the file parameter before passing forward
+            filePath = filePath.replaceAll("[\\r\\n]", "");
+            
             File file = new File(getServletContext().getRealPath("/") + context);
             file = new File(file.getParent()+"/docs/"+filePath);       
             int length   = 0;
