@@ -1,0 +1,116 @@
+
+Testing ./ ...
+
+ ✗ [Low] Sensitive Cookie in HTTPS Session Without 'Secure' Attribute 
+   Path: src/java/validate/ValidateLogin.java, line 50 
+   Info: Cookie misses a call to setSecure. Set the Secure flag to true to protect the cookie from man-in-the-middle attacks.
+
+ ✗ [Low] Use of Password Hash With Insufficient Computational Effort 
+   Path: src/java/validate/ValidateLogin.java, line 70 
+   Info: The MD5 hash (used in java.security.MessageDigest.getInstance) is insecure. Consider changing it to a secure hash algorithm
+
+ ✗ [Low] Trust Boundary Violation 
+   Path: src/java/validate/ValidateLogin.java, line 47 
+   Info: Unsanitized input from an HTTP parameter flows into setAttribute where it is used to modify the HTTP session object. This could result in mixing trusted and untrusted data in the same data structure, thus increasing the likelihood to mistakenly trust unvalidated data.
+
+ ✗ [Low] Trust Boundary Violation 
+   Path: src/java/validate/ValidateLogin.java, line 48 
+   Info: Unsanitized input from an HTTP parameter flows into setAttribute where it is used to modify the HTTP session object. This could result in mixing trusted and untrusted data in the same data structure, thus increasing the likelihood to mistakenly trust unvalidated data.
+
+ ✗ [Medium] Cross-site Scripting (XSS) 
+   Path: web/forum.jsp, line 74 
+   Info: Unsanitized input from a database flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [Medium] Cross-site Scripting (XSS) 
+   Path: web/forum.jsp, line 76 
+   Info: Unsanitized input from a database flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [Medium] Improper Neutralization of CRLF Sequences in HTTP Headers 
+   Path: web/download.jsp, line 21 
+   Info: Unsanitized input from an HTTP parameter flows into setHeader and reaches an HTTP header returned to the user. This may allow a malicious input that contain CR/LF to split the http response into two responses and the second response to be controlled by the attacker. This may be used to mount a range of attacks such as cross-site scripting or cache poisoning.
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/login.jsp, line 45 
+   Info: Unsanitized input from cookies flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/login.jsp, line 46 
+   Info: Unsanitized input from cookies flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/forumposts.jsp, line 45 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/forumposts.jsp, line 46 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/forumposts.jsp, line 47 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 48 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 49 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 50 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 56 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 57 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Cross-site Scripting (XSS) 
+   Path: web/profile.jsp, line 58 
+   Info: Unsanitized input from an HTTP parameter flows into print, where it is used to render an HTML page returned to the user. This may result in a Cross-Site Scripting attack (XSS).
+
+ ✗ [High] Path Traversal 
+   Path: web/download.jsp, line 24 
+   Info: Unsanitized input from an HTTP parameter flows into java.io.FileInputStream, where it is used as a path. This may result in a Path Traversal vulnerability and allow an attacker to read arbitrary files.
+
+ ✗ [High] Path Traversal 
+   Path: src/java/validate/ValidateForward.java, line 38 
+   Info: Unsanitized input from an HTTP parameter flows into getRequestDispatcher, where it is used as a path. This may result in a Path Traversal vulnerability and allow an attacker to read arbitrary files.
+
+ ✗ [High] SQL Injection 
+   Path: web/forum.jsp, line 57 
+   Info: Unsanitized input from an HTTP parameter flows into executeUpdate, where it is used in an SQL query. This may result in an SQL Injection vulnerability.
+
+ ✗ [High] SQL Injection 
+   Path: src/java/validate/ValidateLogin.java, line 44 
+   Info: Unsanitized input from an HTTP parameter flows into executeQuery, where it is used in an SQL query. This may result in an SQL Injection vulnerability.
+
+ ✗ [High] SQL Injection 
+   Path: web/forumposts.jsp, line 43 
+   Info: Unsanitized input from an HTTP parameter flows into executeQuery, where it is used in an SQL query. This may result in an SQL Injection vulnerability.
+
+ ✗ [High] SQL Injection 
+   Path: web/profile.jsp, line 46 
+   Info: Unsanitized input from an HTTP parameter flows into executeQuery, where it is used in an SQL query. This may result in an SQL Injection vulnerability.
+
+ ✗ [High] SQL Injection 
+   Path: web/profile.jsp, line 53 
+   Info: Unsanitized input from an HTTP parameter flows into executeQuery, where it is used in an SQL query. This may result in an SQL Injection vulnerability.
+
+
+✔ Test completed
+
+Organization:      danb983
+Test type:         Static code analysis
+Project path:      ./
+
+Summary:
+
+  25 Code issues found
+  18 [High]   3 [Medium]   4 [Low] 
+
+
