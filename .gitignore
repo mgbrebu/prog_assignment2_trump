@@ -1,8 +1,8 @@
-**/Trump/nbproject/private/
-**/Trump/nbproject/Makefile-*.mk
-**/Trump/nbproject/Package-*.bash
-/Trump/build/
-/Trump/nbbuild/
-/Trump/dist/
-/Trump/nbdist/
-/Trump/.nb-gradle/
+/nbproject/private/
+/nbproject/Makefile-*.mk
+/nbproject/Package-*.bash
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
