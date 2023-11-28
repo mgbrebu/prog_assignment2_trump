@@ -49,6 +49,7 @@ public class ValidateLogin extends HttpServlet {
                                         session.setAttribute("isLoggedIn", "1");
                                         Cookie privilege=new Cookie("privilege", getMD5(user));
                                         privilege.setHttpOnly(true);
+                                        privilege.setSecure(true);
                                         response.addCookie(privilege);
                                         response.sendRedirect("members.jsp");
                                    }
