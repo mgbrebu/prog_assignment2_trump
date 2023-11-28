@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 
- <%
- String username="";
- String password="";
- Cookie[] cookies = request.getCookies();
- if (cookies != null)
-  for (Cookie c : cookies) {
-        if ("username".equals(c.getName())) {
-         username= c.getValue();
+<%
+String username="";
+String password=""; 
+Cookie[] cookies = request.getCookies(); // Getting the cookies
+if (cookies != null) { // Checking if the cookies exist
+    for (Cookie c : cookies) { // Looping through the cookies
+        if ("username".equals(c.getName())) { // Checking for the username cookie
+            username = StringEscapeUtils.escapeHtml4(c.getValue()); // Escaping the username
         }
-        else if("password".equals(c.getName()))
-        {
-            password= c.getValue();
+        else if("password".equals(c.getName())) { // Checking for the password cookie
+            password = StringEscapeUtils.escapeHtml4(c.getValue()); // Escaping the password
         }
-  }
-
- %>
+    }
+}
+%>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
