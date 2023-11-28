@@ -40,9 +40,16 @@ public class ValidateLogin extends HttpServlet {
                  Connection con=new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
                     if(con!=null && !con.isClosed())
                                {
+                                   
+                                   PreparedStatement pstmt = null;
                                    ResultSet rs=null;
-                                   Statement stmt = con.createStatement();  
-                                   rs=stmt.executeQuery("select * from users where username='"+user+"' and password='"+pass+"'");
+                                   
+                                   String query = "SELECT * FROM users WHERE username=? AND password=?";
+                                   pstmt = con.prepareStatement(query);
+                                    pstmt.setString(1, user); // Set the first parameter as the 'user'
+                                    pstmt.setString(2, pass); // Set the second parameter as the 'pass'
+
+                                    rs = pstmt.executeQuery();
                                    if(rs != null && rs.next()){
                                         HttpSession session=request.getSession();
                                         session.setAttribute("userid", rs.getString("id"));
