@@ -8,6 +8,10 @@
 <%@ page import="java.util.*,java.io.*"%>
 <%@ page import="dbconnection.DBConnect"%>
 
+<!-- Reflected XSS -->
+<!-- Importing JSTL taglib to auto remove characters that are potentitally used for XSS -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -45,18 +49,30 @@
                             ResultSet rs = null;
                             rs = stmt.executeQuery("select * from users where id=" + id);
                             if (rs != null && rs.next()) {
-                                out.print("UserName : " + rs.getString("username") + "<br>");
-                                out.print("Email : " + rs.getString("email") + "<br>");
-                                out.print("About : " + rs.getString("about") + "<br>");
+                            
+                            // Reflected XSS
+                            // Applying JSTL tags to the username, email, and about sections to remove potential reflected XSS
+                                %>
+                                <!-- Output using <c:out> to automatically escape HTML -->
+                                UserName : <c:out value="${rs.getString('username')}" /><br>
+                                Email : <c:out value="${rs.getString('email')}" /><br>
+                                About : <c:out value="${rs.getString('about')}" /><br>
 
+                                <%
                                 //Getting Card Details:
                                 ResultSet rs1 = stmt.executeQuery("select * from carddetail where id=" + id);
                                 if (rs1 != null && rs1.next()) {
-                                    out.print("<br/>-------------------<br/>Card Details:<br/>-------------------<br/>");
-                                    out.print("Card Number: " + rs1.getString("cardno") + "<br/>");
-                                    out.print("CVV: " + rs1.getString("cvv") + "<br/>");
-                                    out.print("Expiry Date: " + rs1.getString("expiry") + "<br/>");
-                                }
+                                
+                                // Reflected XSS
+                                // Applying JSTL tags to card num, CVV, and expiry date sections to remove potential reflected XSS
+                                %>
+                                    <br/>-------------------<br/>Card Details:<br/>-------------------<br/>
+                                    <!-- Output card details using <c:out> -->
+                                    Card Number: <c:out value="${rs1.getString('cardno')}" /><br/>
+                                    CVV: <c:out value="${rs1.getString('cvv')}" /><br/>
+                                    Expiry Date: <c:out value="${rs1.getString('expiry')}" /><br/>
+                                <%
+                                    }
 
                             }
                         } else {
