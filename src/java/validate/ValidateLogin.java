@@ -11,9 +11,15 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+
+
+//--------------
+// VULN 4 | Trust Boundary Violation / Part.1
 import java.sql.PreparedStatement;
+//--------------
+
+
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -41,23 +47,36 @@ public class ValidateLogin extends HttpServlet {
                     if(con!=null && !con.isClosed())
                                {
                                    
-                                   PreparedStatement pstmt = null;
-                                   ResultSet rs=null;
                                    
-                                   String query = "SELECT * FROM users WHERE username=? AND password=?";
-                                   pstmt = con.prepareStatement(query);
+                                   //--------------
+                                   // VULN 4 | Trust Boundary Violation / Part.2
+                                    PreparedStatement pstmt = null; // Initialize PreparedStatement variable
+                                    ResultSet rs=null; // Initialize ResultSet variable
+                                   
+                                    String query = "SELECT * FROM users WHERE username=? AND password=?"; // Create PreparedStatement string
+                                    pstmt = con.prepareStatement(query); // Prepare the prepared statement
                                     pstmt.setString(1, user); // Set the first parameter as the 'user'
                                     pstmt.setString(2, pass); // Set the second parameter as the 'pass'
 
-                                    rs = pstmt.executeQuery();
-                                   if(rs != null && rs.next()){
+                                    rs = pstmt.executeQuery(); // Execute the prepared statement
+                                    //--------------
+                                    
+                                    
+                                    if(rs != null && rs.next()){
                                         HttpSession session=request.getSession();
                                         session.setAttribute("userid", rs.getString("id"));
                                         session.setAttribute("user", rs.getString("username"));
                                         session.setAttribute("isLoggedIn", "1");
+                                        
+                                        
+                                        //--------------
+                                        // VULN 1 and VULN 2 | Cookie HttpOnly Flag / Cookie Secure Attribute
                                         Cookie privilege=new Cookie("privilege", getMD5(user));
-                                        privilege.setHttpOnly(true);
-                                        privilege.setSecure(true);
+                                        privilege.setHttpOnly(true);  // Set HttpOnly Flag
+                                        privilege.setSecure(true);  // Set Secure Flag
+                                        //--------------
+                                        
+                                        
                                         response.addCookie(privilege);
                                         response.sendRedirect("members.jsp");
                                    }
@@ -75,11 +94,18 @@ public class ValidateLogin extends HttpServlet {
     private String getMD5(String user) {
 
         MessageDigest mdAlgorithm = null;
+        
+        
+        //--------------
+        // VULN 3 | Insufficient Hash
         try {
-            mdAlgorithm = MessageDigest.getInstance("SHA-256");
+            mdAlgorithm = MessageDigest.getInstance("SHA-256");  // Change hashing algorithm from MD5 to SHA-256
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(ValidateLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //--------------
+        
+        
         mdAlgorithm.update(user.getBytes());
 
         byte[] digest = mdAlgorithm.digest();

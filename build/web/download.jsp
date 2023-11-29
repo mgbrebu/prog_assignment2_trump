@@ -12,9 +12,14 @@
                String filePath;
             filePath = request.getParameter("file");
             
-            //Sanitize the file parameter before passing forward
-            //Attempts to remove CRLF in file path to not be passed to header
+            
+            //--------------
+            // VULN 5 | Neutralization of CRLF in Headers
+            // Sanitize the file parameter before passing forward
+            // Attempts to remove CRLF in file path to not be passed to header
             filePath = filePath.replaceAll("[\\r\\n]", "");
+            //--------------
+            
             
             File file = new File(getServletContext().getRealPath("/") + context);
             file = new File(file.getParent()+"/docs/"+filePath);       

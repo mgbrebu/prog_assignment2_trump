@@ -34,25 +34,9 @@ public class ValidateForward extends HttpServlet {
            if(request.getParameter("location")!=null)
             {
                 String location=request.getParameter("location");
-                
-                //Sanitize location to mitigate path traversal
-                location = location.replaceAll("\\.\\./", "");
-                
-                //Get base path using ServletContext
-                String basePath = getServletContext().getRealPath("/");
-                
-                //Combine location with basePath to form absolute path to location, preventing path traversal
-                String absolutePath = basePath + location;
-                
-                //Making sure absolute path begins with valid basePath and forwards, else throws an error
-                if(absolutePath.startsWith(basePath)) 
-                {
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(absolutePath);
-                    dispatcher.forward(request,response);
-                }
-                else {
-                    out.print("Invalid location!");
-                }
+                //Forwarding
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(location);
+                dispatcher.forward(request,response);
             }
             else
             {

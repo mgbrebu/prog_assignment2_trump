@@ -1,8 +1,7 @@
 <%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.Statement"%>
 <%@page import="dbconnection.DBConnect"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="org.apache.commons.text.StringEscapeUtils"%> <!-- Import for escaping HTML -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -13,11 +12,10 @@
     <%
         Connection con = new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
         if (session.getAttribute("isLoggedIn") != null && session.getAttribute("isLoggedIn").equals("1")) {
-            out.print("Hello " + StringEscapeUtils.escapeHtml4((String) session.getAttribute("user")) + ", Welcome to Our Forum !");
+            out.print("Hello " + session.getAttribute("user") + ", Welcome to Our Forum !");
         }
     %>
     <body>
-
         <div id="container">
             <div id="mainpic">         
             </div>   
@@ -48,43 +46,42 @@
 
                 <%
 
-                <%
-                    if (request.getParameter("post") != null) {                                             // Check if post button is clicked
-                        String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));          // Get values from form
-                        String content = StringEscapeUtils.escapeHtml4(request.getParameter("content"));    // Get values from form
-                        String title = StringEscapeUtils.escapeHtml4(request.getParameter("title"));        // Get values from form
+                    if (request.getParameter("post") != null) {
+                        String user = request.getParameter("user");
+                        String content = request.getParameter("content");
+                        String title = request.getParameter("title");
 
-                        if (con != null && !con.isClosed()) {   // Check if connection is not null and not closed
-                            PreparedStatement pstmt = con.prepareStatement("INSERT INTO posts(content, title, user) VALUES (?, ?, ?)");     // Prepare SQL statement
-                            pstmt.setString(1, content);        // Set values for SQL statement
-                            pstmt.setString(2, title);          // Set values for SQL statement
-                            pstmt.setString(3, user);           // Set values for SQL statement
-                            pstmt.executeUpdate();              // Execute SQL statement
-                            out.print("Successfully posted");   // Print success message
+                %>
+                <%        if (con != null && !con.isClosed()) {
+                            Statement stmt = con.createStatement();
+                            stmt.executeUpdate("INSERT into posts(content,title,user) values ('" + content + "','" + title + "','" + user + "')");
+                            out.print("Successfully posted");
                         }
                     }
+
                 %>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <h3>List of Posts:</h3> 
-                <%        
-                    if (con != null && !con.isClosed()) {      // Check if connection is not null and not closed
-                        PreparedStatement pstmt = con.prepareStatement("SELECT * FROM posts");    // Prepare SQL statement
-                        ResultSet rs = pstmt.executeQuery();     // Execute SQL statement
-                        out.println("<table border='1' width='80%'>");  // Print table
-                        while (rs.next()) {    // Loop through result set
-                            out.print("<tr>"); // Print table row
-                            out.print("<td><a href='forumposts.jsp?postid=" + StringEscapeUtils.escapeHtml4(rs.getString("id")) + "'>" + StringEscapeUtils.escapeHtml4(rs.getString("title")) + "</a></td>"); // Print table data
-                            out.print("<td> - Posted By "); // Print table data
-                            out.print(StringEscapeUtils.escapeHtml4(rs.getString("user"))); // Print table data
-                            out.println("</td></tr>"); // Print table data
+                <%        if (con != null && !con.isClosed()) {
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = null;
+                        rs = stmt.executeQuery("select * from posts");
+                        out.println("<table border='1' width='80%'>");
+                        while (rs.next()) {
+                            out.print("<tr>");
+                            out.print("<td><a href='forumposts.jsp?postid=" + rs.getString("id") + "'>" + rs.getString("title") + "</a></td>");
+                            out.print("<td> - Posted By ");
+                            out.print(rs.getString("user"));
+                            out.println("</td></tr>");
+
                         }
                         out.println("</table>");
                     }
                 %>
 
-                <!-- [Footer Content] -->
+                <div id="footer"><h3><a href="http://www.trump.com/">Trump Web Design</a></h3></div>
             </div>
         </div>
     </body>
