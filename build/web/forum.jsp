@@ -5,9 +5,10 @@
 <%@page import="dbconnection.DBConnect"%>
 <%@page import="java.sql.Connection"%>
 
-<!-- >Login.jsp XSS VULN FIX Part.1 -->
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- Importing JSTL to use to secure the form -->
-<!-- ---------- -->
+<!-- Forum.jsp XSS Fix Part.1-->
+<!-- Importing JSTL to secure pulling of forum post data -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!-- -------- -->
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -66,7 +67,7 @@
                             // stmt.executeUpdate("INSERT into posts(content,title,user) values ('" + content + "','" + title + "','" + user + "')");
                             // VULN SQLi -----------------------------------------------------------
 
-                            
+                        
                                 // FIXED XSS AND SQLi VULNERABILITIES -----------------------------------------------------------
                                 String sql = "INSERT into posts(content, title, user) values (?, ?, ?);";
                                 PreparedStatement pstmt = con.prepareStatement(sql);
@@ -89,7 +90,6 @@
                 <h3>List of Posts:</h3> 
                 <%        if (con != null && !con.isClosed()) {
                         Statement stmt = con.createStatement();
-
                         ResultSet rs = null;
                         rs = stmt.executeQuery("select * from posts");
                         out.println("<table border='1' width='80%'>");
@@ -99,8 +99,8 @@
                             out.print("<td> - Posted By ");
                             out.print(rs.getString("user"));
                             out.println("</td></tr>");
-                        }   
 
+                        }
                         out.println("</table>");
                     }
                 %>

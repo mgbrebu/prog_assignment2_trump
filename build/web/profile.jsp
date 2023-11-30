@@ -53,7 +53,7 @@
                             // Reflected XSS
                             // Applying JSTL tags to the username, email, and about sections to remove potential reflected XSS
                                 %>
-                                <!-- Output using <c:out> to automatically escape HTML -->
+                                <!-- Output using c:out to automatically escape HTML -->
                                 UserName : <c:out value="${rs.getString('username')}" /><br>
                                 Email : <c:out value="${rs.getString('email')}" /><br>
                                 About : <c:out value="${rs.getString('about')}" /><br>
