@@ -86,11 +86,12 @@
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <h3>List of Posts:</h3> 
-
-                // ----------------------------------------------------------------
-                // VULN CODE ------------------------------------------------------
-                  <%        
-                        if (con != null && !con.isClosed()) {
+                    
+                <%        
+                // Forum.jsp XSS VULN FIX
+                // Fixed by creating a method that escapes common XSS characters 
+                // and applied it to each string being pulled from the result set
+                    if (con != null && !con.isClosed()) {
                         Statement stmt = con.createStatement();
 
                         ResultSet rs = null;
@@ -98,16 +99,28 @@
                         out.println("<table border='1' width='80%'>");
                         while (rs.next()) {
                             out.print("<tr>");
-                            out.print("<td><a href='forumposts.jsp?postid=" + rs.getString("id") + "'>" + rs.getString("title") + "</a></td>");
+                            out.print("<td><a href='forumposts.jsp?postid=" + escape(rs.getString("id")) + "'>" + escape(rs.getString("title")) + "</a></td>");
                             out.print("<td> - Posted By ");
-                            out.print(rs.getString("user"));
+                            out.print(escape(rs.getString("user")));
                             out.println("</td></tr>");
                         }   
-
-                        out.println("</table>");
+                    out.println("</table>");
                     }
-                %>  
-                // VULN CODE ------------------------------------------------------
+                %>
+                
+                <%!
+                // Forum.jsp XSS VULN FIX Part.2
+                // This is the method that escapes common XSS characters
+                // Used to escape data shown to the user in the forum
+                private String escape(String in) {
+                    return in.replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll("\"", "&quot;")
+                    .replaceAll("'", "&#39;");
+                }
+                // ------------
+                %>
 
                 <div id="footer"><h3><a href="http://www.trump.com/">Trump Web Design</a></h3></div>
             </div>
