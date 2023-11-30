@@ -43,7 +43,7 @@
            } else {
                out.print("Anonymous");
            } %>"/><br/>
-                    <input type="submit" value="Post" name="post"/>
+                    <input type="submit" value="Post" name="post"/> 
                 </form>
 
                 <%
@@ -55,7 +55,6 @@
 
                 %>
                 <%        if (con != null && !con.isClosed()) {
-                            Statement stmt = con.createStatement();
                            
                             // VULN SQLi -----------------------------------------------------------
                             // stmt.executeUpdate("INSERT into posts(content,title,user) values ('" + content + "','" + title + "','" + user + "')");
@@ -65,7 +64,7 @@
                                 // FIXED XSS AND SQLi VULNERABILITIES -----------------------------------------------------------
                                 String sql = "INSERT into posts(content, title, user) values (?, ?, ?)";
                                 PreparedStatement pstmt = con.prepareStatement(sql);
-                                pstmt.setString(1, content);
+                                pstmt.setString(1, content); 
                                 pstmt.setString(2, title);
                                 pstmt.setString(3, user);
                                 pstmt.executeUpdate();
