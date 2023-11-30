@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="dbconnection.DBConnect"%>
 <%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -38,9 +38,14 @@
 
                     String postid = request.getParameter("postid");
                     if (postid != null) {
-                        Statement stmt = con.createStatement();
-                        ResultSet rs = null;
-                        rs = stmt.executeQuery("select * from posts where id=" + postid);
+
+                        //--------------
+                        // VULN 6 | Neutralization of CRLF in Headers
+                        int postIdInt = Integer.parseInt(postid);
+                        PreparedStatement pstmt = con.prepareStatement("SELECT * FROM posts WHERE id=?");
+                        pstmt.setInt(1, postIdInt);
+
+                        ResultSet rs = pstmt.executeQuery();
                         if (rs != null && rs.next()) {
                             out.print("<b style='font-size:22px'>Title:" + rs.getString("title") + "</b>");
                             out.print("<br/>-  Posted By " + rs.getString("user"));
