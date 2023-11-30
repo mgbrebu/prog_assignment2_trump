@@ -17,55 +17,53 @@
     </head>
 
     <body>
-        <div id="container">
-            <div id="mainpic">         
-            </div>   
+        <!-- Other HTML content -->
 
-            <div id="menu">
-                <ul>
-                    <li class="menuitem"><a href="index.jsp">Home</a></li>
-                    <li class="menuitem"><a href="quotes.jsp">Quotes</a></li>
-                    <li class="menuitem"><a href="news.jsp">News</a></li>
-                    <li class="menuitem"><a href="profile.jsp?id=<% if (session.getAttribute("userid") != null) {out.print(session.getAttribute("userid"));} %>">Profile</a></li>
-                    <li class="menuitem"><a href="forum.jsp">Members Forum</a></li>
-                    <li class="menuitem"><a href="ValidateLogout">Logout</a></li>
-                </ul>
-            </div>
-
-            <div id="content">
-                <%
-                    Connection con = new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
-
-                    String postid = request.getParameter("postid");
-                    if (postid != null) {
-
-                        //--------------
-                        // VULN 6 | Neutralization of CRLF in Headers
-                        int postIdInt = Integer.parseInt(postid);
-                        PreparedStatement pstmt = con.prepareStatement("SELECT * FROM posts WHERE id=?");
-                        pstmt.setInt(1, postIdInt);
-
-                        ResultSet rs = pstmt.executeQuery();
-                        if (rs != null && rs.next()) {
-                            out.print("<b style='font-size:22px'>Title:" + rs.getString("title") + "</b>");
-                            out.print("<br/>-  Posted By " + rs.getString("user"));
-                            out.print("<br/><br/>Content:<br/>" + rs.getString("content"));
-                        }
-                    } else {
-                        out.print("ID Parameter is Missing");
+        <div id="content">
+            <%
+                // HTML ESCAPING METHOD - START
+                // Method to escape HTML special chars
+                private String escapeHtml(String input) {   // Method to escape HTML special chars
+                    if(input == null) {                     // If input = null, return empty str
+                        return "";
                     }
+                    return input.replace("&", "&amp;")      // Replace special chars with HTML ents
+                                .replace("<", "&lt;")       // to prevent XSS attacks
+                                .replace(">", "&gt;")       // by escaping the input
+                                .replace("\"", "&quot;")    // before displaying it
+                                .replace("'", "&#x27;")     // on the page
+                                .replace("/", "&#x2F;");    //
+                    }
+                // HTML ESCAPING METHOD - END
 
-                    out.print("<br/><br/><a href='forum.jsp'>Return to Forum &gt;&gt;</a>");
-                %>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <div id="footer"><h3><a href="http://www.trump.com/">Trump Web Design</a></h3></div>
-            </div>
+                Connection con = new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
+                String postid = request.getParameter("postid");
+                if (postid != null) {
+                    int postIdInt = Integer.parseInt(postid);
+                    PreparedStatement pstmt = con.prepareStatement("SELECT * FROM posts WHERE id=?");
+                    pstmt.setInt(1, postIdInt);
+                    ResultSet rs = pstmt.executeQuery();
+                    if (rs != null && rs.next()) {
+
+                        // ORIGINAL CODE - START
+                        // out.print("<b style='font-size:22px'>Title:" + rs.getString("title") + "</b>");
+                        // out.print("<br/>-  Posted By " + rs.getString("user"));
+                        // out.print("<br/><br/>Content:<br/>" + rs.getString("content"));
+                        // ORIGINAL CODE - END
+
+                        // CHANGED CODE FOR XSS MITIGATION - START
+                        out.print("<b style='font-size:22px'>Title:" + escapeHtml(rs.getString("title")) + "</b>");     // Escape HTML special chars
+                        out.print("<br/>-  Posted By " + escapeHtml(rs.getString("user")));                             // before
+                        out.print("<br/><br/>Content:<br/>" + escapeHtml(rs.getString("content")));                     // displaying 
+                        // CHANGED CODE FOR XSS MITIGATION - END
+                    }  
+                } else {
+                    out.print("ID Parameter is Missing");
+                }
+
+                out.print("<br/><br/><a href='forum.jsp'>Return to Forum &gt;&gt;</a>");
+            %>
         </div>
-
-
-
     </body>
 </html>
 
