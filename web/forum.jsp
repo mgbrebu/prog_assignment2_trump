@@ -65,10 +65,10 @@
                 // FIXED CODE ------------------------------------------------------
                 <%
                 // Method to escape HTML
-                private String escapeHtml(String input) {
-                if (input == null) {
-                return "";
-                }
+                String escapeHtml(String input) {
+                    if (input == null) {
+                        return "";
+                    }
                 return input.replace("&", "&amp;")
                             .replace("<", "&lt;")
                             .replace(">", "&gt;")

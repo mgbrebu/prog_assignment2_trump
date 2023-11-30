@@ -23,7 +23,7 @@
             <%
                 // HTML ESCAPING METHOD - START
                 // Method to escape HTML special chars
-                private String escapeHtml(String input) {   // Method to escape HTML special chars
+                static escapeHtml(String input) {   // Method to escape HTML special chars
                     if(input == null) {                     // If input = null, return empty str
                         return "";
                     }

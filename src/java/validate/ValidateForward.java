@@ -36,23 +36,25 @@ public class ValidateForward extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-           if(request.getParameter("location")!=null)
-            {
-                String location=request.getParameter("location");
-                //Forwarding
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(location);
-                dispatcher.forward(request,response);
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            try {
+                if (request.getParameter("location") != null) {
+                    String location = request.getParameter("location");
+
+                    // Check for traversal patterns (e.g., "..")
+                    if (!location.contains("..")) {
+                        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(location);
+                        dispatcher.forward(request, response);
+                    } else {
+                        out.print("Access to this location is not allowed");
+                    }
+                } else {
+                    out.print("Location Parameter is missing");
+                }
+            } finally {     
+                out.close();
             }
-            else
-            {
-                out.print("Location Parameter is missing");
-            }
-        } finally {
-            out.close();
-        }
     }
     
 
