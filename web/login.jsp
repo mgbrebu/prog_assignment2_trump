@@ -45,16 +45,16 @@
             </ul>
         </div>
         
-        // Login.jsp XSS VULN FIX Part.2
+        <!-- Login.jsp XSS VULN FIX Part.2 -->
 		<div id="content">
         	<form action="ValidateLogin" method="post">
             <table> 
-                <tr><td>UserName: </td><td><input type="text" name="username" value="<c:out value='${password}' />" /></td></tr> // Using JSTL tags to secure password
-                <tr><td>Password :</td><td><input type="text" name="password" value="<c:out value='${username}' />"/></td></tr> // Using JSTL tags to secure username
+                <tr><td>UserName: </td><td><input type="text" name="username" value="<c:out value='${password}' />" /></td></tr> <!--Using JSTL tags to secure password-->
+                <tr><td>Password :</td><td><input type="text" name="password" value="<c:out value='${username}' />"/></td></tr> <!--Using JSTL tags to secure username-->
                 <tr><td><input type="submit" name="Login" value="Login"/></td></tr>
             </table>  
         </form>
-        //-----------
+        <!-- -->
             
             <div id="footer"><h3><a href="http://www.donaldtrumpstinks.com/">Trump Web Design</a></h3></div>
       </div>
