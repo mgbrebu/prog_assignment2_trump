@@ -38,12 +38,14 @@ public class ValidateForward extends HttpServlet {
             throws ServletException, IOException {
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
+
+            // Path Traversal VULN FIX
             try {
                 if (request.getParameter("location") != null) {
                     String location = request.getParameter("location");
 
-                    // Check for traversal patterns (e.g., "..")
-                    if (!location.contains("..")) {
+                    // Check for possible Path Traversal
+                    if (!location.contains("..")) { // If the location doesn't contain .. (to get to an outer directory)
                         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(location);
                         dispatcher.forward(request, response);
                     } else {
@@ -55,6 +57,7 @@ public class ValidateForward extends HttpServlet {
             } finally {     
                 out.close();
             }
+            // -------------
     }
     
 
