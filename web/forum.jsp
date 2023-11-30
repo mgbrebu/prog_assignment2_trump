@@ -54,7 +54,23 @@
                 %>
                 <%        if (con != null && !con.isClosed()) {
                             Statement stmt = con.createStatement();
-                            stmt.executeUpdate("INSERT into posts(content,title,user) values ('" + content + "','" + title + "','" + user + "')");
+                           
+                            // VULN SQLi -----------------------------------------------------------
+                            // stmt.executeUpdate("INSERT into posts(content,title,user) values ('" + content + "','" + title + "','" + user + "')");
+                            // VULN SQLi -----------------------------------------------------------
+
+                            <%
+                                // FIXED XSS AND SQLi VULNERABILITIES -----------------------------------------------------------
+                                String sql = "INSERT into posts(content, title, user) values (?, ?, ?)";
+                                PreparedStatement pstmt = con.prepareStatement(sql);
+                                pstmt.setString(1, content);
+                                pstmt.setString(2, title);
+                                pstmt.setString(3, user);
+                                pstmt.executeUpdate();
+                                // FIXED VULNERABILITY -----------------------------------------------------------
+                            %>
+
+
                             out.print("Successfully posted");
                         }
                     }
@@ -66,6 +82,7 @@
                 <h3>List of Posts:</h3> 
                 <%        if (con != null && !con.isClosed()) {
                         Statement stmt = con.createStatement();
+
                         ResultSet rs = null;
                         rs = stmt.executeQuery("select * from posts");
                         out.println("<table border='1' width='80%'>");
@@ -75,8 +92,8 @@
                             out.print("<td> - Posted By ");
                             out.print(rs.getString("user"));
                             out.println("</td></tr>");
+                        }   
 
-                        }
                         out.println("</table>");
                     }
                 %>
