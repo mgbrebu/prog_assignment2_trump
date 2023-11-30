@@ -62,7 +62,7 @@
 
                             <%
                                 // FIXED XSS AND SQLi VULNERABILITIES -----------------------------------------------------------
-                                String sql = "INSERT into posts(content, title, user) values (?, ?, ?)";
+                                String sql = "INSERT into posts(content, title, user) values (?, ?, ?);";
                                 PreparedStatement pstmt = con.prepareStatement(sql);
                                 pstmt.setString(1, content); 
                                 pstmt.setString(2, title);
