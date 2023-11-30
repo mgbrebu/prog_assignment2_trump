@@ -21,20 +21,6 @@
 
         <div id="content">
             <%
-                // HTML ESCAPING METHOD - START
-                // Method to escape HTML special chars
-                private String escapeHtml(String input) {   // Method to escape HTML special chars
-                    if(input == null) {                     // If input = null, return empty str
-                        return "";
-                    }
-                    return input.replace("&", "&amp;")      // Replace special chars with HTML ents
-                                .replace("<", "&lt;")       // to prevent XSS attacks
-                                .replace(">", "&gt;")       // by escaping the input
-                                .replace("\"", "&quot;")    // before displaying it
-                                .replace("'", "&#x27;")     // on the page
-                                .replace("/", "&#x2F;");    //
-                    }
-                // HTML ESCAPING METHOD - END
 
                 Connection con = new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
                 String postid = request.getParameter("postid");
@@ -46,16 +32,10 @@
                     if (rs != null && rs.next()) {
 
                         // ORIGINAL CODE - START
-                        // out.print("<b style='font-size:22px'>Title:" + rs.getString("title") + "</b>");
-                        // out.print("<br/>-  Posted By " + rs.getString("user"));
-                        // out.print("<br/><br/>Content:<br/>" + rs.getString("content"));
+                         out.print("<b style='font-size:22px'>Title:" + rs.getString("title") + "</b>");
+                         out.print("<br/>-  Posted By " + rs.getString("user"));
+                         out.print("<br/><br/>Content:<br/>" + rs.getString("content"));
                         // ORIGINAL CODE - END
-
-                        // CHANGED CODE FOR XSS MITIGATION - START
-                        out.print("<b style='font-size:22px'>Title:" + escapeHtml(rs.getString("title")) + "</b>");     // Escape HTML special chars
-                        out.print("<br/>-  Posted By " + escapeHtml(rs.getString("user")));                             // before
-                        out.print("<br/><br/>Content:<br/>" + escapeHtml(rs.getString("content")));                     // displaying 
-                        // CHANGED CODE FOR XSS MITIGATION - END
                     }  
                 } else {
                     out.print("ID Parameter is Missing");

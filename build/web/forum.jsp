@@ -58,28 +58,8 @@
                         String user = request.getParameter("user");
                         String content = request.getParameter("content");
                         String title = request.getParameter("title");
-
-                %>
-
-                // ----------------------------------------------------------------
-                // FIXED CODE ------------------------------------------------------
-                <%
-                // Method to escape HTML
-                private String escapeHtml(String input) {
-                if (input == null) {
-                return "";
-                }
-                return input.replace("&", "&amp;")
-                            .replace("<", "&lt;")
-                            .replace(">", "&gt;")
-                            .replace("\"", "&quot;")
-                            .replace("'", "&#x27;")
-                            .replace("/", "&#x2F;");
-                }
-                %>
-                // FIXED CODE ------------------------------------------------------
-
-                <%        if (con != null && !con.isClosed()) {
+                
+                        if (con != null && !con.isClosed()) {
                            
                             // VULN SQLi -----------------------------------------------------------
                             // stmt.executeUpdate("INSERT into posts(content,title,user) values ('" + content + "','" + title + "','" + user + "')");
@@ -106,9 +86,10 @@
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <h3>List of Posts:</h3> 
+
                 // ----------------------------------------------------------------
                 // VULN CODE ------------------------------------------------------
-/*              <%        
+                  <%        
                         if (con != null && !con.isClosed()) {
                         Statement stmt = con.createStatement();
 
@@ -125,32 +106,8 @@
 
                         out.println("</table>");
                     }
-                %>  */
+                %>  
                 // VULN CODE ------------------------------------------------------
-
-                // FIXED CODE ------------------------------------------------------
-                <%
-                if (con != null && !con.isClosed()) {
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = null;
-                    rs = stmt.executeQuery("select * from posts");
-                    out.println("<table border='1' width='80%'>");
-                    while (rs.next()) {
-                        String postId = escapeHtml(rs.getString("id"));
-                        String postTitle = escapeHtml(rs.getString("title"));
-                        String postUser = escapeHtml(rs.getString("user"));
-
-                        out.print("<tr>");
-                        out.print("<td><a href='forumposts.jsp?postid=" + postId + "'>" + postTitle + "</a></td>");
-                        out.print("<td> - Posted By ");
-                        out.print(postUser);
-                        out.println("</td></tr>");
-                    }   
-
-                    out.println("</table>");
-                }
-                %>
-                // FIXED CODE ------------------------------------------------------
 
                 <div id="footer"><h3><a href="http://www.trump.com/">Trump Web Design</a></h3></div>
             </div>
