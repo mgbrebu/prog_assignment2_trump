@@ -60,16 +60,16 @@
                             // stmt.executeUpdate("INSERT into posts(content,title,user) values ('" + content + "','" + title + "','" + user + "')");
                             // VULN SQLi -----------------------------------------------------------
 
-                            <%
+                            
                                 // FIXED XSS AND SQLi VULNERABILITIES -----------------------------------------------------------
-                                String sql = "INSERT into posts(content, title, user) values (?, ?, ?)";
+                                String sql = "INSERT into posts(content, title, user) values (?, ?, ?);";
                                 PreparedStatement pstmt = con.prepareStatement(sql);
                                 pstmt.setString(1, content); 
                                 pstmt.setString(2, title);
                                 pstmt.setString(3, user);
                                 pstmt.executeUpdate();
                                 // FIXED VULNERABILITY -----------------------------------------------------------
-                            %>
+                            
 
 
                             out.print("Successfully posted");
