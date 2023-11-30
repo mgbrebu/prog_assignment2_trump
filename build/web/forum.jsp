@@ -5,10 +5,9 @@
 <%@page import="dbconnection.DBConnect"%>
 <%@page import="java.sql.Connection"%>
 
-<!-- Forum.jsp XSS Fix Part.1-->
-<!-- Importing JSTL to secure pulling of forum post data -->
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!-- -------- -->
+<!-- >Login.jsp XSS VULN FIX Part.1 -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- Importing JSTL to use to secure the form -->
+<!-- ---------- -->
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -61,13 +60,32 @@
                         String title = request.getParameter("title");
 
                 %>
+
+                // ----------------------------------------------------------------
+                // FIXED CODE ------------------------------------------------------
+                <%
+                // Method to escape HTML
+                private String escapeHtml(String input) {
+                if (input == null) {
+                return "";
+                }
+                return input.replace("&", "&amp;")
+                            .replace("<", "&lt;")
+                            .replace(">", "&gt;")
+                            .replace("\"", "&quot;")
+                            .replace("'", "&#x27;")
+                            .replace("/", "&#x2F;");
+                }
+                %>
+                // FIXED CODE ------------------------------------------------------
+
                 <%        if (con != null && !con.isClosed()) {
                            
                             // VULN SQLi -----------------------------------------------------------
                             // stmt.executeUpdate("INSERT into posts(content,title,user) values ('" + content + "','" + title + "','" + user + "')");
                             // VULN SQLi -----------------------------------------------------------
 
-                        
+                            
                                 // FIXED XSS AND SQLi VULNERABILITIES -----------------------------------------------------------
                                 String sql = "INSERT into posts(content, title, user) values (?, ?, ?);";
                                 PreparedStatement pstmt = con.prepareStatement(sql);
@@ -88,8 +106,12 @@
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <h3>List of Posts:</h3> 
-                <%        if (con != null && !con.isClosed()) {
+                // ----------------------------------------------------------------
+                // VULN CODE ------------------------------------------------------
+/*              <%        
+                        if (con != null && !con.isClosed()) {
                         Statement stmt = con.createStatement();
+
                         ResultSet rs = null;
                         rs = stmt.executeQuery("select * from posts");
                         out.println("<table border='1' width='80%'>");
@@ -99,11 +121,36 @@
                             out.print("<td> - Posted By ");
                             out.print(rs.getString("user"));
                             out.println("</td></tr>");
+                        }   
 
-                        }
                         out.println("</table>");
                     }
+                %>  */
+                // VULN CODE ------------------------------------------------------
+
+                // FIXED CODE ------------------------------------------------------
+                <%
+                if (con != null && !con.isClosed()) {
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = null;
+                    rs = stmt.executeQuery("select * from posts");
+                    out.println("<table border='1' width='80%'>");
+                    while (rs.next()) {
+                        String postId = escapeHtml(rs.getString("id"));
+                        String postTitle = escapeHtml(rs.getString("title"));
+                        String postUser = escapeHtml(rs.getString("user"));
+
+                        out.print("<tr>");
+                        out.print("<td><a href='forumposts.jsp?postid=" + postId + "'>" + postTitle + "</a></td>");
+                        out.print("<td> - Posted By ");
+                        out.print(postUser);
+                        out.println("</td></tr>");
+                    }   
+
+                    out.println("</table>");
+                }
                 %>
+                // FIXED CODE ------------------------------------------------------
 
                 <div id="footer"><h3><a href="http://www.trump.com/">Trump Web Design</a></h3></div>
             </div>
